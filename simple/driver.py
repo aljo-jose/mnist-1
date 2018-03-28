@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from sklearn.datasets import load_digits
 from importlib import reload
+from sklearn.linear_model import LogisticRegression
 import mnist_cluster
 import mnist_classifier
 
@@ -30,11 +31,18 @@ if __name__ == 'main':
     
     # Classify non-clustered dataset.
     obj_classifier = mnist_classifier.Classifier(X, y)
-    obj_classifier.classify() # Accuracy: 0.9666666666666667
+    predictions = obj_classifier.classify(LogisticRegression(random_state=11)) # Accuracy: 0.9666
     
     # Classify clustered dataset.
     obj_classifier = mnist_classifier.Classifier(X_clustered, y)
-    obj_classifier.classify() #Accuracy: 0.9694444444444444
+    predictions = obj_classifier.classify(LogisticRegression(random_state=11)) #Accuracy: 0.9694
+    print(np.unique(predictions))
+    
+    # Classify clustered dataset with a multiclass paramater.
+    obj_classifier = mnist_classifier.Classifier(X_clustered, y)
+    predictions = obj_classifier.classify(LogisticRegression(multi_class='multinomial', solver='newton-cg', random_state=11))
+    print(np.unique(predictions)) # Accuracy 0.9722
+
     
     
     
